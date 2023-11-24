@@ -2,7 +2,7 @@
 #define TINY_GSM_MODEM_SIM7600
 #include <SoftwareSerial.h>
 // #include "AHTLAB_SIM7600CE.h"
-// #include <HCSR04.h>
+#include <HCSR04.h>
 #include <ESP32Servo.h>
 #include <WiFiManager.h>
 #include <WiFi.h>
@@ -85,11 +85,27 @@ unsigned long previousMillis = 0;
 unsigned char autoTrigger = 0;
 unsigned long autoMillis = 0;
 unsigned long autoSendtoServer = 0;
-// HCSR04 sr04_detect_person(SRF04_DETECT_PERSON_TRIG_PIN, SRF04_DETECT_PERSON_ECHO_PIN);
-// HCSR04 sr04_trash_level(SRF04_TRASH_LEVEL_TRIG_PIN, SRF04_TRASH_LEVEL_ECHO_PIN);
+HCSR04 sr04_detect_person(SRF04_DETECT_PERSON_TRIG_PIN, SRF04_DETECT_PERSON_ECHO_PIN);
+HCSR04 sr04_trash_level(SRF04_TRASH_LEVEL_TRIG_PIN, SRF04_TRASH_LEVEL_ECHO_PIN);
 int servoPin = SERVO_PIN;
 // WiFiManager wm;
 // Initialize underlying client, used to establish a connection
+
+// SRF05 Sensor
+// #define SRF04_DETECT_PERSON_TRIG_PIN        19
+// #define SRF04_DETECT_PERSON_ECHO_PIN        18
+// #define SRF04_TRASH_LEVEL_TRIG_PIN          22
+// #define SRF04_TRASH_LEVEL_ECHO_PIN          21
+const int trigger_trash = 22;
+const int echo_trash    = 21;
+
+SRF05 SRF_trash(trigger_trash, echo_trash);
+
+const int trigger_detect_people = 19;
+const int echo_detect_people    = 18;
+
+SRF05 SRF_detect_people(trigger_detect_people, echo_detect_people);
+
 WiFiClient wifiClient;
 // Initalize the Mqtt client instance
 Arduino_MQTT_Client mqttClient(wifiClient);
